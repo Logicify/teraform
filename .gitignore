@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Terraform template
+# Compiled files
+*.tfstate
+*.tfstate.backup
+.terraform
+.terraform*
+
+### IDE
+.idea
+secrets
+keys
