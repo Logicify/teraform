@@ -1,22 +1,25 @@
 #!/bin/bash -x
 
+function link_external_storage() {
+    STORAGE_PATH="$1"
+    TARGET_PATH="$2"
+
+    mkdir -p "$STORAGE_PATH"
+    if [ -d "$TARGET_PATH" ] && [ "$(ls -A "$STORAGE_PATH")" ]; then
+        echo "Skip $TARGET_PATH"
+    else
+        cp -r $TARGET_PATH/* "$STORAGE_PATH"
+    fi
+    rm -rf "$TARGET_PATH"
+    ln -s $STORAGE_PATH $TARGET_PATH
+}
+
 (
 ARCH=`arch`
 
 # Storage config
-mkdir -p /store/clearos_config
-mkdir -p /store/clearos_data
-ln -s /store/clearos_config /etc/clearos
-ln -s /store/clearos_data /var/clearos
-mkdir -p /store/openvpn
-ln -s /store/openvpn /etc/openvpn
 # PKI
-mkdir -p /store/pki
-if [ -d /etc/pki ]; then
-    cp -r /etc/pki/* /store/pki/
-    rm -rf /etc/pki
-fi
-ln -s /store/pki /etc/pki
+link_external_storage "/store/pki" "/etc/pki"
 
 # Prep release and repos
 rpm -Uvh http://download2.clearsdn.com/marketplace/cloud/7/noarch/clearos-release-7-current.noarch.rpm
@@ -59,6 +62,30 @@ sed -i -e 's/^MODE=.*/MODE="standalone"/' /etc/clearos/network.conf
 service webconfig start
 
 ) 2>&1 | tee /var/log/clearos-installer.log
+
+# LDAP
+link_external_storage "/store/ldap/data" "/var/lib/ldap"
+link_external_storage "/store/ldap/config" "/etc/openldap"
+mkdir -p /store/ldap/config/slapd.d
+chown -R ldap:ldap /store/ldap/data/*
+chown -R ldap:ldap /store/ldap/data
+chown -R ldap:ldap /store/ldap/config/*
+chown -R ldap:ldap /store/ldap/config
+chmod -R o+rw /store/ldap/data/
+chmod -R o+rw /var/lib/ldap/*
+setfacl -R -m u:ldap:rw /store/ldap
+setfacl -R -d -m u:ldap:rwx /store/ldap
+setfacl -R -m o:rwx /store/ldap
+setfacl -R -d -m o:rw /store/ldap
+# Clearos
+link_external_storage "/store/clearos_config" "/etc/clearos"
+link_external_storage "/store/clearos_data" "/var/clearos"
+chmod -R o+rw /store/clearos_data
+chmod -R o+rw /store/clearos_config
+# OpenVPN
+link_external_storage "/store/openvpn" "/etc/openvpn"
+# Dnsmasq
+link_external_storage "/store/dnsmasq" "/etc/dnsmasq.d/"
 
 # Reboot
 reboot

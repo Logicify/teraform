@@ -63,10 +63,13 @@ write_files:
   content: ${base64encode(file("${path.module}/resources/centos-to-clearos.sh"))}
   owner: root:root
   permissions: '0755'
+- path: /etc/profile.d/centos-welcome.sh
+  encoding: b64
+  content: ${base64encode(file("${path.module}/resources/greatings.sh"))}
+  owner: root:root
+  permissions: '0755'
 runcmd:
-  - [ cloud-init-per, once, "set-hostname", "aws-set-hostname", "controller", "-s" ]
-  - [ cloud-init-per, once, "mount-data-vol", "mount-ebs", "${var.instance_data_volume_device_name}", "/store" ]
-  - [ cloud-init-per, once, "install-clearos", "centos-to-clearos" ]
+  - [ cloud-init-per, once, "set-hostname", "aws-set-hostname", "domain-controller", "-s" ]
 USER_DATA_END
 
   tags {
