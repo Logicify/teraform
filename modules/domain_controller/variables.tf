@@ -46,10 +46,10 @@ variable "centos_ami" {
   default = "ami-46c1b650"
 }
 
-variable "provisioning_key_path" {
-  description = "Private key (.pem file) to be used for instance provisioning"
-}
-
 variable "enable_termination_protection" {
   default = true
+}
+
+variable "vpc_id" {
+  description = "VPC to place instance in"
 }

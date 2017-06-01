@@ -1,4 +1,5 @@
 resource "aws_security_group" "clearos" {
+  vpc_id = "${var.vpc_id}"
   name = "${var.env_name}: Domain controller SG"
   description = "Rules for domain controller"
 
