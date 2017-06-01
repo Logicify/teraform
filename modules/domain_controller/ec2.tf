@@ -27,7 +27,7 @@ resource "aws_security_group" "clearos" {
     to_port = 1194
     cidr_blocks = [
       "${var.trusted_networks_vpn}"]
-    protocol = "tcp"
+    protocol = "udp"
   }
 
   tags {
@@ -99,4 +99,9 @@ resource "aws_volume_attachment" "clearos_data_volume" {
   force_detach = true
   volume_id = "${aws_ebs_volume.clearos_data_volume.id}"
   instance_id = "${aws_instance.clearos.id}"
+}
+
+resource "aws_eip" "clearos" {
+  vpc = true
+  instance = "${aws_instance.clearos.id}"
 }
