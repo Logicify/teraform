@@ -74,7 +74,7 @@ mkdir -p $MOUNT_POINT
 FSTAB_RECORD=`cat /etc/fstab | grep $MOUNT_POINT`
 if [ -z "$FSTAB_RECORD" ]; then
     echo "Creating FS TAB record..."
-    FSTAB_RECORD="$DEVICE   $MOUNT_POINT    $FS rw,user,exec,acl,umask=000    0 0"
+    FSTAB_RECORD="$DEVICE   $MOUNT_POINT    $FS rw,user,exec,acl    0 0"
     echo "> $FSTAB_RECORD"
     echo "$FSTAB_RECORD" >> /etc/fstab
     echo "FS TAB written"

@@ -65,18 +65,18 @@ service webconfig start
 
 # LDAP
 link_external_storage "/store/ldap/data" "/var/lib/ldap"
-link_external_storage "/store/ldap/config" "/etc/openldap"
-mkdir -p /store/ldap/config/slapd.d
-chown -R ldap:ldap /store/ldap/data/*
-chown -R ldap:ldap /store/ldap/data
-chown -R ldap:ldap /store/ldap/config/*
-chown -R ldap:ldap /store/ldap/config
-chmod -R o+rw /store/ldap/data/
-chmod -R o+rw /var/lib/ldap/*
-setfacl -R -m u:ldap:rw /store/ldap
-setfacl -R -d -m u:ldap:rwx /store/ldap
-setfacl -R -m o:rwx /store/ldap
-setfacl -R -d -m o:rw /store/ldap
+#link_external_storage "/store/ldap/config" "/etc/openldap"
+#mkdir -p /store/ldap/config/slapd.d
+#chown -R ldap:ldap /store/ldap/data/*
+#chown -R ldap:ldap /store/ldap/data
+#chown -R ldap:ldap /store/ldap/config/*
+#chown -R ldap:ldap /store/ldap/config
+#chmod -R o+rw /store/ldap/data/
+#chmod -R o+rw /var/lib/ldap/*
+#setfacl -R -m u:ldap:rw /store/ldap
+#setfacl -R -d -m u:ldap:rwx /store/ldap
+#setfacl -R -m o:rwx /store/ldap
+#setfacl -R -d -m o:rw /store/ldap
 # Clearos
 link_external_storage "/store/clearos_config" "/etc/clearos"
 link_external_storage "/store/clearos_data" "/var/clearos"
@@ -85,7 +85,7 @@ chmod -R o+rw /store/clearos_config
 # OpenVPN
 link_external_storage "/store/openvpn" "/etc/openvpn"
 # Dnsmasq
-link_external_storage "/store/dnsmasq" "/etc/dnsmasq.d/"
+link_external_storage "/store/dnsmasq" "/etc/dnsmasq.d"
 
 # Reboot
 reboot
