@@ -3,16 +3,19 @@ variable "target_subnet_id" {
 }
 
 variable "trusted_networks_ssh" {
+  type = "list"
   description = "The list of CIDRs to be whitelisted for SSH access"
 }
 
 variable "trusted_networks_webpanel" {
+  type = "list"
   description = "The list of CIDRs to be whitelisted for web panel (port 81)"
 }
 
 variable "trusted_networks_vpn" {
   description = "The list of CIDRs to be whitelisted for openvpn access"
-  default = "0.0.0.0/0"
+  default = ["0.0.0.0/0"]
+  type = "list"
 }
 
 variable "default_security_group_ids" {
