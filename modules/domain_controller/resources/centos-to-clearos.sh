@@ -64,7 +64,7 @@ service webconfig start
 ) 2>&1 | tee /var/log/clearos-installer.log
 
 # LDAP
-link_external_storage "/store/ldap/data" "/var/lib/ldap"
+#link_external_storage "/store/ldap/data" "/var/lib/ldap"
 #link_external_storage "/store/ldap/config" "/etc/openldap"
 #mkdir -p /store/ldap/config/slapd.d
 #chown -R ldap:ldap /store/ldap/data/*
