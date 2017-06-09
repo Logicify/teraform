@@ -38,7 +38,7 @@ yum-config-manager --enable clearos-centos-extras
 yum-config-manager --enable clearos-centos
 yum-config-manager --enable clearos-centos-fasttrack clearos-centos-updates
 
-yum install -y app-openvpn app-openldap-directory app-administrators app-dns app-storage
+yum install -y app-openvpn app-openldap-directory app-administrators app-dns app-storage app-firewall app-firewall-custom
 
 # Default networking
 yum -y remove NetworkManager
