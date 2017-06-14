@@ -94,3 +94,11 @@ variable "elasticsearch_version" {
   type = "string"
   default = "5.2.2"
 }
+
+variable "docker_log_file_name" {
+  default = "docker-app.log"
+}
+
+variable "syslog_tag_prefix" {
+  default = "elasticsearch"
+}

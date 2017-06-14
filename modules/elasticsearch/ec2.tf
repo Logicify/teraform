@@ -32,10 +32,10 @@ write_files:
     ECS_AVAILABLE_LOGGING_DRIVERS=["json-file","syslog","journald","gelf","awslogs"]
 - path: /etc/sysctl.d/01-elasticsearch.conf
   content: |
-    vm.max_map_count = 262144
+    :syslogtag, startswith, "${var.syslog_tag_prefix}" /var/log/${var.docker_log_file_name}
 runcmd:
   - [ cloud-init-per, once, "install-unix-tools", "install-unix-tools", "-t", "1.0", "full"]
-  - [ cloud-init-per, once, "set-hostname", "aws-set-hostname", "${lower(var.verbose_name)}graylog-elasticsearch-{count.index}", "-s"]
+  - [ cloud-init-per, once, "set-hostname", "aws-set-hostname", "${lower(var.verbose_name)}-elasticsearch-{count.index}", "-s"]
   - [ cloud-init-per, once, "read-custom-syslog", "sysctl", "-p", "/etc/sysctl.d/01-elasticsearch.conf"]
   - [ cloud-init-per, once, "docker-stop", "service", "docker", "stop"]
   - [ cloud-init-per, once, "mount-ebs", "mount-ebs", "${var.data_volume_device}", "${var.data_volume_path}", "0777" ]
