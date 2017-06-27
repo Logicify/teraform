@@ -41,7 +41,7 @@ resource "aws_security_group" "elasticsearch_sg" {
 }
 
 data "template_file" "elasticsearch_master_cloudconfig" {
-  template = "${file("${path.module}/resources/userdata.tpl")}"
+  template = "${file("${path.module}/../resources/userdata.tpl")}"
   vars {
     configuration_script = "${base64encode(file("${path.module}/resources/install-unix-tools.sh"))}"
     cluster_name = "${var.ecs_cluster_name}"
@@ -53,7 +53,7 @@ data "template_file" "elasticsearch_master_cloudconfig" {
 }
 
 data "template_file" "elasticsearch_data_cloudconfig" {
-  template = "${file("${path.module}/resources/userdata.tpl")}"
+  template = "${file("${path.module}/../resources/userdata.tpl")}"
   vars {
     configuration_script = "${base64encode(file("${path.module}/resources/install-unix-tools.sh"))}"
     cluster_name = "${var.ecs_cluster_name}"
