@@ -1,11 +1,11 @@
 resource "aws_iam_instance_profile" "elasticsearch" {
-  name = "${lower(var.env_name)}-${var.verbose_name}-elasticsearch"
+  name = "${lower(var.env_name)}-${lower(var.verbose_name)}-elasticsearch"
   role = "${aws_iam_role.elasticsearch_role.name}"
 }
 
 resource "aws_iam_role" "elasticsearch_role" {
   name = "${lower(var.env_name)}-${var.verbose_name}-elasticsearch"
-  assume_role_policy = "${data.aws_iam_policy_document.ec2_assume_policy}"
+  assume_role_policy = "${data.aws_iam_policy_document.ec2_assume_policy.json}"
 }
 
 resource "aws_iam_role_policy" "docker_policy" {

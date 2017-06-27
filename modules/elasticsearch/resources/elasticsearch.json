@@ -1,28 +1,75 @@
 [
   {
-    "name": "${container-name}",
-    "image": "elasticsearch:${elasticsearch-version}",
-    "memory": ${memory},
+    "name": "${container_name}",
+    "image": "docker.elastic.co/elasticsearch/elasticsearch:${elasticsearch_version}",
+    "memory": ${container_memory},
     "essential": true,
     "portMappings": [
       {
-      "hostPort": ${native_transport_port},
-      "containerPort": 9300,
-      "protocol": "tcp"
+        "hostPort": ${native_transport_port},
+        "containerPort": 9300,
+        "protocol": "tcp"
       },
       {
-      "hostPort": ${http_service_port},
-      "containerPort": 9200,
-      "protocol": "tcp"
+        "hostPort": ${http_transport_port},
+        "containerPort": 9200,
+        "protocol": "tcp"
       }
     ],
     "environment": [
-
+      {
+        "name": "cluster.name",
+        "value": "${cluster_name}"
+      },
+      {
+        "name": "node.name",
+        "value": "${node_name}"
+      },
+      {
+        "name": "node.master",
+        "value": "${is_master}"
+      },
+      {
+        "name": "node.data",
+        "value": "${is_data}"
+      },
+      {
+        "name": "network.host",
+        "value": "0.0.0.0"
+      },
+      {
+        "name": "xpack.security.enabled",
+        "value": "false"
+      },
+      {
+        "name": "path.data",
+        "value": "/srv/elasticsearch/data"
+      },
+      {
+        "name": "path.logs",
+        "value": "/srv/elasticsearch/logs"
+      },
+      {
+        "name": "bootstrap.memory_lock",
+        "value": "true"
+      },
+      {
+        "name": "ES_JAVA_OPTS",
+        "value": "-Xms${heap_size}m -Xmx${heap_size}m"
+      },
+      {
+        "name": "discovery.zen.ping.unicast.hosts",
+        "value": "${master_nodes_addresses}"
+      },
+      {
+        "name": "discovery.zen.minimum_master_nodes",
+        "value": "${min_master_nodes}"
+      }
     ],
     "mountPoints": [
       {
         "sourceVolume": "${volume_name}",
-        "containerPath": "/usr/share/elasticsearch/data",
+        "containerPath": "/srv/elasticsearch/",
         "readOnly": false
       }
     ],
@@ -33,9 +80,24 @@
         "name": "nofile",
         "hardLimit": 65536,
         "softLimit": 65536
+      },
+      {
+        "name": "nproc",
+        "hardLimit": 2048,
+        "softLimit": 2048
+      },
+      {
+        "name": "memlock",
+        "hardLimit": -1,
+        "softLimit": -1
       }
     ],
     "dockerLabels": null,
-    "command": ["bash", "-c",  "chmod -R o+rw /usr/share/elasticsearch/data && gosu elasticsearch elasticsearch -Enetwork.publish_host=`curl -s http://169.254.169.254/latest/meta-data/local-ipv4` -Etransport.tcp.port=${native_transport_port} -Enode.name=${node_name} -Ecluster.name=${elasticsearch_cluster_name} ${extra_options}"]
+    "logConfiguration": {
+      "logDriver": "syslog",
+      "options": {
+        "tag": "elasticsearch"
+      }
+    }
   }
 ]
