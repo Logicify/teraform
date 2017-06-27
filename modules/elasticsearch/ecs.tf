@@ -45,7 +45,7 @@ resource "aws_ecs_service" "elasticsearch_data_service" {
 }
 
 data "template_file" "elasticsearch_master_config" {
-  template = "${file("${path.module}/resources/elasticsearch.json")}"
+  template = "${file("${path.module}/../resources/elasticsearch.json")}"
   vars {
     elasticsearch_version = "${var.elasticsearch_version}"
     container_name = "elasticsearch-master"
@@ -64,7 +64,7 @@ data "template_file" "elasticsearch_master_config" {
 }
 
 data "template_file" "elasticsearch_data_config" {
-  template = "${file("${path.module}/resources/elasticsearch.json")}"
+  template = "${file("${path.module}/../resources/elasticsearch.json")}"
   vars {
     elasticsearch_version = "${var.elasticsearch_version}"
     container_name = "elasticsearch-data"
