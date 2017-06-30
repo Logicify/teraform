@@ -1,0 +1,33 @@
+[
+  {
+    "name": "${container_name}",
+    "image": "mongo:${mongo_version}",
+    "memory": ${mongo_container_memory},
+    "essential": true,
+    "portMappings": [
+      {
+        "hostPort": ${native_transport_port},
+        "containerPort": 27017,
+        "protocol": "tcp"
+      }
+    ],
+    "environment": [],
+    "mountPoints": [
+      {
+        "sourceVolume": "${volume_name}",
+        "containerPath": "/data/db",
+        "readOnly": false
+      }
+    ],
+    "volumesFrom": null,
+    "extraHosts": null,
+    "ulimits": [],
+    "dockerLabels": null,
+    "logConfiguration": {
+      "logDriver": "syslog",
+      "options": {
+        "tag": "mongodb"
+      }
+    }
+  }
+]

@@ -1,16 +1,16 @@
-resource "aws_iam_instance_profile" "elasticsearch" {
-  name = "${lower(var.env_name)}-elasticsearch"
-  role = "${aws_iam_role.elasticsearch_role.name}"
+resource "aws_iam_instance_profile" "graylog" {
+  name = "${lower(var.env_name)}-${lower(var.verbose_name)}-graylog"
+  role = "${aws_iam_role.graylog_role.name}"
 }
 
-resource "aws_iam_role" "elasticsearch_role" {
-  name = "${lower(var.env_name)}-elasticsearch"
+resource "aws_iam_role" "graylog_role" {
+  name = "${lower(var.env_name)}-${lower(var.verbose_name)}-graylog"
   assume_role_policy = "${data.aws_iam_policy_document.ec2_assume_policy.json}"
 }
 
 resource "aws_iam_role_policy" "docker_policy" {
   name = "${lower(var.env_name)}-docker-policy"
-  role = "${aws_iam_role.elasticsearch_role.id}"
+  role = "${aws_iam_role.graylog_role.id}"
   policy = "${data.aws_iam_policy_document.docker_policy.json}"
 }
 

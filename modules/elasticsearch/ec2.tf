@@ -4,32 +4,32 @@ resource "aws_security_group" "elasticsearch_sg" {
 
   # Elasticsearch native transport protocol
   ingress {
-    from_port = 9300
-    to_port = 9300
+    from_port = "${var.elasticsearch_native_port}"
+    to_port = "${var.elasticsearch_native_port}"
     protocol = "tcp"
     cidr_blocks = ["${var.trusted_networks}"]
   }
 
   # Elasticsearch HTTP service
   ingress {
-    from_port = 9200
-    to_port = 9200
+    from_port = "${var.elasticsearch_http_port}"
+    to_port = "${var.elasticsearch_http_port}"
     protocol = "tcp"
     cidr_blocks = ["${var.trusted_networks}"]
   }
 
   # Elasticsearch native transport protocol
   egress {
-    from_port = 9300
-    to_port = 9300
+    from_port = "${var.elasticsearch_native_port}"
+    to_port = "${var.elasticsearch_native_port}"
     protocol = "tcp"
     cidr_blocks = ["${var.trusted_networks}"]
   }
 
   # Elasticsearch HTTP service
   egress {
-    from_port = 9200
-    to_port = 9200
+    from_port = "${var.elasticsearch_http_port}"
+    to_port = "${var.elasticsearch_http_port}"
     protocol = "tcp"
     cidr_blocks = ["${var.trusted_networks}"]
   }
@@ -40,27 +40,29 @@ resource "aws_security_group" "elasticsearch_sg" {
   }
 }
 
-data "template_file" "elasticsearch_master_cloudconfig" {
+data "template_file" "master_node_cloudconfig" {
   template = "${file("${path.module}/resources/userdata.tpl")}"
   vars {
-    configuration_script = "${base64encode(file("${path.module}/../resources/install-unix-tools.sh"))}"
-    cluster_name = "${var.ecs_cluster_name}"
     cluster_role = "elasticsearch-master"
-    host_name = "${lower(var.verbose_name)}-elasticsearch"
-    volume_device = "${var.data_volume_device}"
+    cluster_name = "${var.ecs_cluster_name}"
+    instance_group = "${var.ecs_instance_group}"
+    host_name = "${lower(var.env_name)}-elasticsearch-master"
     volume_path = "${var.data_volume_path}"
+    volume_device = "${var.data_volume_device}"
+    configuration_script = "${base64encode(file("${path.module}/../resources/install-unix-tools.sh"))}"
   }
 }
 
-data "template_file" "elasticsearch_data_cloudconfig" {
+data "template_file" "data_node_cloudconfig" {
   template = "${file("${path.module}/resources/userdata.tpl")}"
   vars {
-    configuration_script = "${base64encode(file("${path.module}/../resources/install-unix-tools.sh"))}"
-    cluster_name = "${var.ecs_cluster_name}"
     cluster_role = "elasticsearch-data"
-    host_name = "${lower(var.verbose_name)}-elasticsearch"
-    volume_device = "${var.data_volume_device}"
+    cluster_name = "${var.ecs_cluster_name}"
+    instance_group = "${var.ecs_instance_group}"
+    host_name = "${lower(var.env_name)}-elasticsearch-data"
     volume_path = "${var.data_volume_path}"
+    volume_device = "${var.data_volume_device}"
+    configuration_script = "${base64encode(file("${path.module}/../resources/install-unix-tools.sh"))}"
   }
 }
 
@@ -76,7 +78,7 @@ resource "aws_instance" "elasticsearch_master_instance" {
   source_dest_check = false
   disable_api_termination = "${var.enable_termination_protection}"
   instance_initiated_shutdown_behavior = "stop"
-  user_data = "${data.template_file.elasticsearch_master_cloudconfig.rendered}"
+  user_data = "${data.template_file.master_node_cloudconfig.rendered}"
   tags {
     Env = "${var.env_name}"
     Name = "${var.env_name}-${var.verbose_name}-Elasticsearch-Master-Zone${count.index}"
@@ -85,7 +87,6 @@ resource "aws_instance" "elasticsearch_master_instance" {
 
 resource "aws_instance" "elasticsearch_data_instance" {
   count = "${var.data_nodes_count}"
-  depends_on = ["aws_ebs_volume.elasticsearch_data_volume"]
   ami = "${var.instance_ami}"
   instance_type = "${var.data_instance_type}"
   subnet_id = "${element(var.vpc_subnets, count.index)}"
@@ -96,7 +97,7 @@ resource "aws_instance" "elasticsearch_data_instance" {
   source_dest_check = false
   disable_api_termination = "${var.enable_termination_protection}"
   instance_initiated_shutdown_behavior = "stop"
-  user_data = "${data.template_file.elasticsearch_data_cloudconfig.rendered}"
+  user_data = "${data.template_file.data_node_cloudconfig.rendered}"
   tags {
     Env = "${var.env_name}"
     Name = "${var.env_name}-${var.verbose_name}-Elasticsearch-Data-Zone${count.index}"
@@ -107,20 +108,19 @@ resource "aws_ebs_volume" "elasticsearch_data_volume" {
   count = "${var.data_nodes_count}"
   availability_zone = "${element(var.availability_zones, count.index)}"
   size = "${var.data_instance_storage_size}"
-
   tags {
     Env = "${var.env_name}"
-    Name = "${var.env_name}-${var.verbose_name}-Elasticseach-Volume-Zone${count.index}"
+    Name = "${var.env_name}-${var.verbose_name}-Elasticsearch-Data-Volume-Zone${count.index}"
   }
 }
 
 resource "aws_ebs_volume" "elasticsearch_master_volume" {
   count = "${var.master_nodes_count}"
   availability_zone = "${element(var.availability_zones, count.index)}"
-  size = 10
+  size = "${var.master_instance_storage_size}"
   tags {
     Env = "${var.env_name}"
-    Name = "${var.env_name}-${var.verbose_name}-Elasticseach-Volume-Zone${count.index}"
+    Name = "${var.env_name}-${var.verbose_name}-Elasticsearch-Master-Volume-Zone${count.index}"
   }
 }
 
@@ -140,23 +140,24 @@ resource "aws_volume_attachment" "elasticsearch_master_volume_attachement" {
   instance_id = "${element(aws_instance.elasticsearch_master_instance.*.id, count.index)}"
 }
 
+
 data "aws_route53_zone" "local" {
   zone_id = "${var.vpc_dns_zone_id}"
 }
 
-resource "aws_route53_record" "elasticsearch_master_node_dns_records" {
-  count = "${var.master_nodes_count}"
+resource "aws_route53_record" "elasticsearch_master_record" {
+  count = "${var.master_nodes_count > 0 ? 1 : 0}"
   zone_id = "${var.vpc_dns_zone_id}"
-  name = "${var.master_nodes_count == 1 ? format("elasticsearch.master.%s", data.aws_route53_zone.local.name) : format("elasticsearch.master%d.%s", count.index, data.aws_route53_zone.local.name)}"
+  name = "elasticsearch.master.${data.aws_route53_zone.local.name}",
   type = "A"
   ttl = "60"
-  records = ["${element(aws_instance.elasticsearch_master_instance.*.private_ip, 0)}"]
+  records = ["${aws_instance.elasticsearch_master_instance.*.private_ip}"]
 }
 
-resource "aws_route53_record" "elasticsearch_data_node_dns_records" {
-  count = "${var.data_nodes_count}"
+resource "aws_route53_record" "elasticsearch_data_record" {
+  count = "${var.data_nodes_count > 0 ? 1 : 0}"
   zone_id = "${var.vpc_dns_zone_id}"
-  name = "${var.data_nodes_count == 1 ? format("elasticsearch.%s", data.aws_route53_zone.local.name) : format("elasticsearch%d.%s", count.index, data.aws_route53_zone.local.name)}"
+  name = "elasticsearch.${data.aws_route53_zone.local.name}",
   type = "A"
   ttl = "60"
   records = ["${element(aws_instance.elasticsearch_data_instance.*.private_ip, 0)}"]

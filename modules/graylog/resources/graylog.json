@@ -1,0 +1,90 @@
+[
+  {
+    "name": "${container_name}",
+    "image": "graylog2/server:${graylog_version}",
+    "memory": ${container_memory},
+    "essential": true,
+    "portMappings": [
+      {
+        "hostPort": 80,
+        "containerPort": 9000,
+        "protocol": "tcp"
+      },
+      {
+        "hostPort": 12900,
+        "containerPort": 12900,
+        "protocol": "tcp"
+      },
+      {
+        "hostPort": 9350,
+        "containerPort": 9350,
+        "protocol": "tcp"
+      },
+      {
+        "hostPort": 12201,
+        "containerPort": 12201,
+        "protocol": "udp"
+      },
+      {
+        "hostPort": 12201,
+        "containerPort": 12201,
+        "protocol": "tcp"
+      },
+      {
+        "hostPort": 12202,
+        "containerPort": 12202,
+        "protocol": "udp"
+      },
+      {
+        "hostPort": 12203,
+        "containerPort": 12203,
+        "protocol": "udp"
+      },
+      {
+        "hostPort": 12204,
+        "containerPort": 12204,
+        "protocol": "udp"
+      }
+    ],
+    "environment": [
+      { "name": "GRAYLOG_PASSWORD_SECRET", "value": "${graylog_password_secret}" },
+      { "name": "GRAYLOG_ROOT_PASSWORD_SHA2", "value": "${graylog_admin_password_sha2}" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_ENABLED", "value": "true" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_USE_AUTH", "value": "true" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_USE_TLS", "value": "false" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_USE_SSL", "value": "false" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_HOSTNAME", "value": "${smtp_host}" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_PORT", "value": "${smtp_port}" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_AUTH_USERNAME", "value": "${smtp_username}" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_AUTH_PASSWORD", "value": "${smtp_password}" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_FROM_EMAIL", "value": "${email_from}" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_SUBJECT_PREFIX", "value": "[Graylog]" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL", "value": "${graylog_url}" },
+      { "name": "GRAYLOG_MONGODB_URI", "value": "${mongodb_url}" },
+      { "name": "GRAYLOG_IS_MASTER", "value": "${graylog_is_master}" },
+      { "name": "GRAYLOG_REST_TRANSPORT_URI", "value": "${graylog_rest_transport_url}" },
+      { "name": "GRAYLOG_ELASTICSEARCH_CLUSTER_NAME", "value": "${elasticsearch_cluster_name}" },
+      { "name": "GRAYLOG_ELASTICSEARCH_SHARDS", "value": "${elasticsearch_shards}" },
+      { "name": "GRAYLOG_ELASTICSEARCH_REPLICAS", "value": "${elasticsearch_replicas}" },
+      { "name": "GRAYLOG_ELASTICSEARCH_DISCOVERY_ZEN_PING_UNICAST_HOSTS", "value": "${elasticsearch_url}"}
+    ],
+    "mountPoints": [
+      {
+        "sourceVolume": "${volume_name}",
+        "containerPath": "/usr/share/graylog/data",
+        "readOnly": false
+      }
+    ],
+    "command": ["bash", "-c", "GRAYLOG_ELASTICSEARCH_NETWORK_PUBLISH_HOST=`curl -s http://169.254.169.254/latest/meta-data/local-ipv4` /docker-entrypoint.sh graylog"],
+    "volumesFrom": null,
+    "extraHosts": null,
+    "ulimits": [],
+    "dockerLabels": null,
+    "logConfiguration": {
+      "logDriver": "syslog",
+      "options": {
+        "tag": "graylog"
+      }
+    }
+  }
+]

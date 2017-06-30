@@ -8,41 +8,6 @@ variable "verbose_name" {
   description = "Human-friendly name that will be used to construct resources names. E.g. Graylog"
 }
 
-variable "elasticsearch_version" {
-  type = "string"
-  description = "Elasticsearch version to use"
-  default = "5.4.2"
-}
-
-variable "elasticsearch_memory_limit" {
-  description = "Ammount of memory to allocate for elasticsearch containers"
-}
-
-variable "elasticsearch_cluster_name" {
-  type = "string"
-  description = "Name of Elasticsearch cluster"
-}
-
-variable "master_nodes_count" {
-  description = "Number of dedicated master eiligible nodes in cluster. Master nodes doesn't store any data and used only to control the cluster itself"
-  default = 0
-}
-
-variable "data_nodes_count" {
-  description = "Number of data nodes in cluster. Data nodes hold the shards and run cluster CRUD operations"
-  default = 1
-}
-
-variable "external_masters_addresses" {
-  type = "list"
-  default = []
-}
-
-variable "is_data_nodes_master_eiligible" {
-  description = "Wheter we should allow data nodes to be elected as master"
-  default = true
-}
-
 variable "vpc_id" {
   type = "string"
   description = "Id of the VPC to host faclities in"
@@ -57,6 +22,20 @@ variable "vpc_security_groups" {
   type = "list"
   description = "Extra VPC security groups to be assigned"
   default = []
+}
+
+variable "vpc_dns_zone_id" {
+  type = "string"
+}
+
+variable "ecs_cluster_name" {
+  type = "string"
+  description = "Name of ecs cluster to start in"
+}
+
+variable "ecs_instance_group" {
+  type = "string"
+  default = "elasticsearch"
 }
 
 variable "instance_ami" {
@@ -84,6 +63,10 @@ variable "data_instance_storage_size" {
   type = "string"
 }
 
+variable "master_instance_storage_size" {
+  default = 10
+}
+
 variable "availability_zones" {
   type = "list"
   description = "List of availability zones to spread facilities between"
@@ -101,11 +84,6 @@ variable "enable_termination_protection" {
   default = true
 }
 
-variable "ecs_cluster_name" {
-  type = "string"
-  description = "Name of ecs cluster to start in"
-}
-
 variable "data_volume_device" {
   type = "string"
   default = "/dev/sdh"
@@ -113,9 +91,70 @@ variable "data_volume_device" {
 
 variable "data_volume_path" {
   type = "string"
-  default = "/srv/elasticseach-data"
+  default = "/srv"
 }
 
-variable "vpc_dns_zone_id" {
+variable "elasticsearch_version" {
   type = "string"
+  description = "Elasticsearch version to use"
+  default = "2.4.5"
 }
+
+variable "elasticsearch_http_port" {
+  default = 9200
+}
+
+variable "elasticsearch_native_port" {
+  default = 9300
+}
+
+variable "elasticsearch_num_shards" {
+  default = 5
+}
+
+variable "elasticsearch_num_replicas" {
+  default = 0
+}
+
+variable "elasticsearch_cluster_name" {
+  type = "string"
+  description = "Name of Elasticsearch cluster"
+}
+
+
+variable "master_memory_limit" {
+  default = 512
+}
+
+variable "elasticsearch_memory_limit" {
+  description = "Ammount of memory to allocate for elasticsearch containers"
+}
+
+variable "external_masters_addresses" {
+  type = "list"
+  default = []
+}
+
+variable "is_data_nodes_master_eiligible" {
+  description = "Wheter we should allow data nodes to be elected as master"
+  default = true
+}
+
+variable "master_tasks_count" {
+  default = 0
+}
+
+variable "data_tasks_count" {
+  default = 1
+}
+
+variable "master_nodes_count" {
+  description = "Number of dedicated master eiligible nodes in cluster. Master nodes doesn't store any data and used only to control the cluster itself"
+  default = 0
+}
+
+variable "data_nodes_count" {
+  description = "Number of data nodes in cluster. Data nodes hold the shards and run cluster CRUD operations"
+  default = 1
+}
+
