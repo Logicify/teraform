@@ -60,7 +60,7 @@ variable "smtp_host" {
 }
 
 variable "smtp_port" {
-  default = 25
+  default = 587
 }
 
 variable "smtp_user" {
@@ -73,6 +73,9 @@ variable "smtp_password" {
   default = ""
 }
 
+variable "smtp_use_tls" {
+  default = true
+}
 
 variable "availability_zones" {
   type = "list"
