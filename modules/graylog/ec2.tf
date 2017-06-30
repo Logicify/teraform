@@ -2,27 +2,12 @@ resource "aws_security_group" "graylog-server-sg" {
   name = "${lower(var.env_name)}-${lower(var.verbose_name)}-graylog-access"
   vpc_id = "${var.vpc_id}"
 
+  // Outbound NTP conenctions (time in cluster need to be in sync)
   ingress {
     from_port = 123
     to_port = 123
     protocol = "udp"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # Elasticsearch native transport protocol
-  ingress {
-    from_port = 9300
-    to_port = 9300
-    protocol = "tcp"
-    cidr_blocks = ["${var.trusted_networks}"]
-  }
-
-  # Elasticsearch HTTP service
-  ingress {
-    from_port = 9200
-    to_port = 9200
-    protocol = "tcp"
-    cidr_blocks = ["${var.trusted_networks}"]
   }
 
   // Inbound HTTP connections for Graylog UI
@@ -45,14 +30,6 @@ resource "aws_security_group" "graylog-server-sg" {
   ingress {
     from_port = 9350
     to_port = 9350
-    protocol = "tcp"
-    cidr_blocks = ["${var.trusted_networks}"]
-  }
-
-  // Inbound MongoDB connections
-  ingress {
-    from_port = 27017
-    to_port = 27017
     protocol = "tcp"
     cidr_blocks = ["${var.trusted_networks}"]
   }
@@ -105,13 +82,6 @@ resource "aws_security_group" "graylog-server-sg" {
     cidr_blocks = ["${var.trusted_networks}"]
   }
 
-  // Outbound MongoDB connections
-  egress {
-    from_port = 27017
-    to_port = 27017
-    protocol = "tcp"
-    cidr_blocks = ["${var.trusted_networks}"]
-  }
 
   // Outbound GELF protocol connections via UDP
   egress {
@@ -137,22 +107,7 @@ resource "aws_security_group" "graylog-server-sg" {
     cidr_blocks = ["${var.trusted_networks}"]
   }
 
-  # Elasticsearch native transport protocol
-  egress {
-    from_port = 9300
-    to_port = 9300
-    protocol = "tcp"
-    cidr_blocks = ["${var.trusted_networks}"]
-  }
-
-  # Elasticsearch HTTP service
-  egress {
-    from_port = 9200
-    to_port = 9200
-    protocol = "tcp"
-    cidr_blocks = ["${var.trusted_networks}"]
-  }
-
+  // Outbound NTP conenctions (time in cluster need to be in sync)
   egress {
     from_port = 123
     to_port = 123
