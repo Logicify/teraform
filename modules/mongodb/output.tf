@@ -1,5 +1,5 @@
 output "mongodb_url" {
-  value = "mongodb://${aws_route53_record.mongod_record.name}:${var.mongod_port}"
+  value = "mongodb://${var.mongodb_username}:${var.mongodb_password}@${aws_route53_record.mongod_record.name}:${var.mongod_port}/${var.mongodb_database}"
 }
 
 output "mongod_instance_ids" {
