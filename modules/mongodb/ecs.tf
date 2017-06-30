@@ -29,6 +29,9 @@ data "template_file" "mongod_task_config" {
     container_name = "mongod-server"
     mongo_version = "${var.mongodb_version}"
     mongo_container_memory = "${var.mongod_memory_limit}"
+    mongo_password = "${var.mongodb_password}"
+    mongo_username = "${var.mongodb_username}"
+    mongo_database = "${var.mongodb_database}"
     native_transport_port = "${var.mongod_port}"
     volume_name = "mongo-data"
   }

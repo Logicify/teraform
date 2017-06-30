@@ -83,7 +83,21 @@ variable "trusted_networks" {
 
 variable "mongodb_version" {
   type = "string"
-  default = "3.0.15"
+  default = "3"
+}
+
+variable "mongodb_password" {
+  type = "string"
+}
+
+
+variable "mongodb_username" {
+  type = "string"
+}
+
+
+variable "mongodb_database" {
+  type = "string"
 }
 
 variable "mongod_port" {

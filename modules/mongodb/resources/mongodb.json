@@ -1,7 +1,7 @@
 [
   {
     "name": "${container_name}",
-    "image": "mongo:${mongo_version}",
+    "image": "bitnami/mongodb:${mongo_version}",
     "memory": ${mongo_container_memory},
     "essential": true,
     "portMappings": [
@@ -11,11 +11,15 @@
         "protocol": "tcp"
       }
     ],
-    "environment": [],
+    "environment": [
+      { "name": "MONGODB_USERNAME", "value": "${mongo_username}" },
+      { "name": "MONGODB_ROOT_PASSWORD", "value": "${mongo_password}" },
+      { "name": "MONGODB_DATABASE", "value": "${mongo_database}" }
+    ],
     "mountPoints": [
       {
         "sourceVolume": "${volume_name}",
-        "containerPath": "/data/db",
+        "containerPath": "/bitnami",
         "readOnly": false
       }
     ],
