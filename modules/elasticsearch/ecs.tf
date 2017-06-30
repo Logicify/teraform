@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "elasticsearch_data_task" {
 
 resource "aws_ecs_service" "elasticsearch_master_service" {
   name = "${lower(var.env_name)}-elasticsearch-master"
-  desired_count = "${var.master_tasks_count}"
+  desired_count = "${var.elasticsearch_master_tasks_count}"
   cluster = "${data.aws_ecs_cluster.ecs_cluster.id}"
   task_definition = "${aws_ecs_task_definition.elasticsearch_master_task.arn}"
   /* Place only of dedicated instances */
@@ -35,7 +35,7 @@ resource "aws_ecs_service" "elasticsearch_master_service" {
 
 resource "aws_ecs_service" "elasticsearch_data_service" {
   name = "${lower(var.env_name)}-elasticsearch-data"
-  desired_count = "${var.data_tasks_count}"
+  desired_count = "${var.elasticsearch_tasks_count}"
   cluster = "${data.aws_ecs_cluster.ecs_cluster.id}"
   task_definition = "${aws_ecs_task_definition.elasticsearch_data_task.arn}"
   placement_constraints {
@@ -50,7 +50,7 @@ data "template_file" "elasticsearch_master_config" {
   vars {
     elasticsearch_version = "${var.elasticsearch_version}"
     container_name = "elasticsearch-master"
-    container_memory = "${var.master_memory_limit}"
+    container_memory = "${var.elasticsearch_master_memory_limit}"
     native_transport_port = "${var.elasticsearch_native_port}"
     http_transport_port = "${var.elasticsearch_http_port}"
     cluster_name = "${var.elasticsearch_cluster_name}"
@@ -61,7 +61,7 @@ data "template_file" "elasticsearch_master_config" {
     num_replicas = "${var.elasticsearch_num_replicas}"
     heap_size = "${var.elasticsearch_memory_limit / 2}"
     volume_name = "elasticsearch-data"
-    extra-options = "-Ddiscovery.zen.minimum_master_nodes=${(var.master_nodes_count / 2) + 1 }"
+    extra-options = "-Ddiscovery.zen.minimum_master_nodes=${(var.elasticsearch_master_nodes_count / 2) + 1 }"
   }
 }
 
@@ -81,6 +81,6 @@ data "template_file" "elasticsearch_data_config" {
     num_replicas = "${var.elasticsearch_num_replicas}"
     heap_size = "${var.elasticsearch_memory_limit / 2}"
     volume_name = "elasticsearch-data"
-    extra-options = "-Ddiscovery.zen.ping.unicast.hosts=${join(", ", concat(var.external_masters_addresses, formatlist("$s:%s", aws_route53_record.elasticsearch_master_record.*.name, var.elasticsearch_native_port)))} -Ddiscovery.zen.minimum_master_nodes=${(var.master_nodes_count / 2) + 1 }"
+    extra-options = "-Ddiscovery.zen.ping.unicast.hosts=${join(", ", concat(var.external_masters_addresses, formatlist("$s:%s", aws_route53_record.elasticsearch_master_record.*.name, var.elasticsearch_native_port)))} -Ddiscovery.zen.minimum_master_nodes=${(var.elasticsearch_master_nodes_count / 2) + 1 }"
   }
 }

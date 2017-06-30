@@ -67,7 +67,7 @@ data "template_file" "data_node_cloudconfig" {
 }
 
 resource "aws_instance" "elasticsearch_master_instance" {
-  count = "${var.master_nodes_count}"
+  count = "${var.elasticsearch_master_nodes_count}"
   ami = "${var.instance_ami}"
   instance_type = "${var.master_instance_type}"
   subnet_id = "${element(var.vpc_subnets, count.index)}"
@@ -86,9 +86,9 @@ resource "aws_instance" "elasticsearch_master_instance" {
 }
 
 resource "aws_instance" "elasticsearch_data_instance" {
-  count = "${var.data_nodes_count}"
+  count = "${var.elasticsearch_nodes_count}"
   ami = "${var.instance_ami}"
-  instance_type = "${var.data_instance_type}"
+  instance_type = "${var.instance_type}"
   subnet_id = "${element(var.vpc_subnets, count.index)}"
   key_name = "${var.instance_key_name}"
   iam_instance_profile = "${aws_iam_instance_profile.elasticsearch.name}"
@@ -105,9 +105,9 @@ resource "aws_instance" "elasticsearch_data_instance" {
 }
 
 resource "aws_ebs_volume" "elasticsearch_data_volume" {
-  count = "${var.data_nodes_count}"
+  count = "${var.elasticsearch_nodes_count}"
   availability_zone = "${element(var.availability_zones, count.index)}"
-  size = "${var.data_instance_storage_size}"
+  size = "${var.instance_storage_size}"
   tags {
     Env = "${var.env_name}"
     Name = "${var.env_name}-${var.verbose_name}-Elasticsearch-Data-Volume-Zone${count.index}"
@@ -115,7 +115,7 @@ resource "aws_ebs_volume" "elasticsearch_data_volume" {
 }
 
 resource "aws_ebs_volume" "elasticsearch_master_volume" {
-  count = "${var.master_nodes_count}"
+  count = "${var.elasticsearch_master_nodes_count}"
   availability_zone = "${element(var.availability_zones, count.index)}"
   size = "${var.master_instance_storage_size}"
   tags {
@@ -125,7 +125,7 @@ resource "aws_ebs_volume" "elasticsearch_master_volume" {
 }
 
 resource "aws_volume_attachment" "elasticsearch_data_volume_attachement" {
-  count = "${var.data_nodes_count}"
+  count = "${var.elasticsearch_nodes_count}"
   device_name = "${var.data_volume_device}"
   force_detach = true
   volume_id = "${element(aws_ebs_volume.elasticsearch_data_volume.*.id, count.index)}"
@@ -133,7 +133,7 @@ resource "aws_volume_attachment" "elasticsearch_data_volume_attachement" {
 }
 
 resource "aws_volume_attachment" "elasticsearch_master_volume_attachement" {
-  count = "${var.master_nodes_count}"
+  count = "${var.elasticsearch_master_nodes_count}"
   device_name = "${var.data_volume_device}"
   force_detach = true
   volume_id = "${element(aws_ebs_volume.elasticsearch_master_volume.*.id, count.index)}"
@@ -146,7 +146,7 @@ data "aws_route53_zone" "local" {
 }
 
 resource "aws_route53_record" "elasticsearch_master_record" {
-  count = "${var.master_nodes_count > 0 ? 1 : 0}"
+  count = "${var.elasticsearch_master_nodes_count > 0 ? 1 : 0}"
   zone_id = "${var.vpc_dns_zone_id}"
   name = "elasticsearch.master.${data.aws_route53_zone.local.name}",
   type = "A"
@@ -155,7 +155,7 @@ resource "aws_route53_record" "elasticsearch_master_record" {
 }
 
 resource "aws_route53_record" "elasticsearch_data_record" {
-  count = "${var.data_nodes_count > 0 ? 1 : 0}"
+  count = "${var.elasticsearch_nodes_count > 0 ? 1 : 0}"
   zone_id = "${var.vpc_dns_zone_id}"
   name = "elasticsearch.${data.aws_route53_zone.local.name}",
   type = "A"

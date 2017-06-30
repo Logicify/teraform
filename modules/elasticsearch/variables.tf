@@ -49,7 +49,7 @@ variable "master_instance_type" {
   default = "t2.micro"
 }
 
-variable "data_instance_type" {
+variable "instance_type" {
   type = "string"
   description = "Size of EC2 instance to use for elasticsearch data nodes, please be aware of elasticsearch_memory_limit value"
 }
@@ -59,7 +59,7 @@ variable "instance_key_name" {
   description = "SSH key name used to associate with EC2 instances"
 }
 
-variable "data_instance_storage_size" {
+variable "instance_storage_size" {
   type = "string"
 }
 
@@ -121,8 +121,7 @@ variable "elasticsearch_cluster_name" {
   description = "Name of Elasticsearch cluster"
 }
 
-
-variable "master_memory_limit" {
+variable "elasticsearch_master_memory_limit" {
   default = 512
 }
 
@@ -140,20 +139,20 @@ variable "is_data_nodes_master_eiligible" {
   default = true
 }
 
-variable "master_tasks_count" {
+variable "elasticsearch_master_tasks_count" {
   default = 0
 }
 
-variable "data_tasks_count" {
+variable "elasticsearch_tasks_count" {
   default = 1
 }
 
-variable "master_nodes_count" {
+variable "elasticsearch_master_nodes_count" {
   description = "Number of dedicated master eiligible nodes in cluster. Master nodes doesn't store any data and used only to control the cluster itself"
   default = 0
 }
 
-variable "data_nodes_count" {
+variable "elasticsearch_nodes_count" {
   description = "Number of data nodes in cluster. Data nodes hold the shards and run cluster CRUD operations"
   default = 1
 }

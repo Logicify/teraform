@@ -90,7 +90,6 @@ variable "mongodb_password" {
   type = "string"
 }
 
-
 variable "mongodb_username" {
   type = "string"
 }

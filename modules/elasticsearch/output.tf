@@ -1,9 +1,9 @@
 output "elasticsearch_http_address" {
-  value = "${var.master_nodes_count > 0  ? format("http://%s:%s", aws_route53_record.elasticsearch_master_record.name, var.elasticsearch_http_port) : format("http://%s:%s", aws_route53_record.elasticsearch_data_record.name, var.elasticsearch_http_port)}"
+  value = "${var.elasticsearch_master_nodes_count > 0  ? format("http://%s:%s", aws_route53_record.elasticsearch_master_record.name, var.elasticsearch_http_port) : format("http://%s:%s", aws_route53_record.elasticsearch_data_record.name, var.elasticsearch_http_port)}"
 }
 
 output "elasticsearch_native_address" {
-  value = "${var.master_nodes_count > 0  ? format("%s:%s", aws_route53_record.elasticsearch_master_record.name, var.elasticsearch_native_port) : format("%s:%s", aws_route53_record.elasticsearch_data_record.name, var.elasticsearch_native_port)}"
+  value = "${var.elasticsearch_master_nodes_count > 0  ? format("%s:%s", aws_route53_record.elasticsearch_master_record.name, var.elasticsearch_native_port) : format("%s:%s", aws_route53_record.elasticsearch_data_record.name, var.elasticsearch_native_port)}"
 }
 
 output "master_instance_ids" {

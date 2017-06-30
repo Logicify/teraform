@@ -12,7 +12,7 @@ resource "aws_ecs_task_definition" "graylog_task" {
 }
 
 resource "aws_ecs_service" "graylog_service" {
-  name = "${lower(var.env_name)}-${lower(var.verbose_name)}-graylog"
+  name = "${lower(var.env_name)}-graylog"
   desired_count = "${var.graylog_tasks_count}"
   cluster = "${data.aws_ecs_cluster.ecs_cluster.id}"
   task_definition = "${aws_ecs_task_definition.graylog_task.arn}"

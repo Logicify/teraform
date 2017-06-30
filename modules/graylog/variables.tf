@@ -110,12 +110,20 @@ variable "graylog_memory_limit" {
   description = "RAM limit for container"
 }
 
+variable "graylog_url" {
+  type = "string"
+}
+
 variable "graylog_nodes_count" {
   default = 1
 }
 
 variable "graylog_tasks_count" {
   default = 1
+}
+
+variable "graylog_is_master" {
+  default = true
 }
 
 variable "graylog_password_secret" {
@@ -131,17 +139,8 @@ variable "graylog_sent_email_from" {
   default = ""
 }
 
-variable "graylog_url" {
-  type = "string"
-}
-
 variable "mongodb_url" {
   type = "string"
-}
-
-
-variable "graylog_is_master" {
-  default = true
 }
 
 variable "elasticsearch_num_shards" {
