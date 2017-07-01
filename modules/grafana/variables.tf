@@ -86,7 +86,7 @@ variable "grafana_version" {
   default = "4.3.2"
 }
 
-variable "grafana_password" {
+variable "grafana_admin_password" {
   type = "string"
 }
 
