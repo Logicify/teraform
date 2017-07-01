@@ -82,7 +82,7 @@
         "name": "nofile",
         "hardLimit": 64000,
         "softLimit": 64000
-      },
+      }
     ],
     "dockerLabels": null,
     "logConfiguration": {
