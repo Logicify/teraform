@@ -35,7 +35,7 @@ data "template_file" "graylog_server_config" {
     smtp_port = "${var.smtp_port}"
     smtp_username  = "${var.smtp_user}"
     smtp_password = "${var.smtp_password}"
-    smtp_use_tls = "${var.smtp_use_tls}"
+    smtp_use_tls = "${var.smtp_use_tls == 1 ? "true" : "false"}"
     email_from = "${var.graylog_sent_email_from}"
     graylog_url = "${var.graylog_url}"
     mongodb_url = "${var.mongodb_url}"
