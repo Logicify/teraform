@@ -77,7 +77,13 @@
     ],
     "command": ["bash", "-c", "GRAYLOG_ELASTICSEARCH_NETWORK_PUBLISH_HOST=`curl -s http://169.254.169.254/latest/meta-data/local-ipv4` /docker-entrypoint.sh graylog"],
     "volumesFrom": null,
-    "ulimits": [],
+    "ulimits": [
+      {
+        "name": "nofile",
+        "hardLimit": 64000,
+        "softLimit": 64000
+      },
+    ],
     "dockerLabels": null,
     "logConfiguration": {
       "logDriver": "syslog",
