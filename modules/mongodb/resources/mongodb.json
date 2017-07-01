@@ -24,7 +24,6 @@
       }
     ],
     "volumesFrom": null,
-    "extraHosts": null,
     "ulimits": [],
     "dockerLabels": null,
     "logConfiguration": {
