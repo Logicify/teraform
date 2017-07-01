@@ -1,0 +1,30 @@
+[
+  {
+    "name": "${container_name}",
+    "image": "mher/flower:${flower_version}",
+    "memory": ${flower_container_memory},
+    "essential": true,
+    "portMappings": [
+      {
+        "hostPort": ${http_transport_port},
+        "containerPort": 5555,
+        "protocol": "tcp"
+      }
+    ],
+    "environment": [
+      { "name": "FLOWER_BASIC_AUTH", "value": "${flower_username}:${flower_password}" },
+      { "name": "FLOWER_BROKER", "value": "${flower_broker_url}" }
+    ],
+    "volumesFrom": null,
+    "extraHosts": null,
+    "command": ["--basic_auth=${flower_username}:${flower_password}",  "--broker=${flower_broker_url}"],
+    "ulimits": [],
+    "dockerLabels": null,
+    "logConfiguration": {
+      "logDriver": "syslog",
+      "options": {
+        "tag": "flower"
+      }
+    }
+  }
+]
