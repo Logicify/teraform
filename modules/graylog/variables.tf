@@ -77,6 +77,10 @@ variable "smtp_use_tls" {
   default = true
 }
 
+variable "smtp_use_ssl" {
+  default = false
+}
+
 variable "availability_zones" {
   type = "list"
   description = "List of availability zones to spread facilities between"

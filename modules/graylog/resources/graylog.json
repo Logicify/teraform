@@ -52,7 +52,7 @@
       { "name": "GRAYLOG_TRANSPORT_EMAIL_ENABLED", "value": "true" },
       { "name": "GRAYLOG_TRANSPORT_EMAIL_USE_AUTH", "value": "true" },
       { "name": "GRAYLOG_TRANSPORT_EMAIL_USE_TLS", "value": "${smtp_use_tls}" },
-      { "name": "GRAYLOG_TRANSPORT_EMAIL_USE_SSL", "value": "${smtp_use_tls}" },
+      { "name": "GRAYLOG_TRANSPORT_EMAIL_USE_SSL", "value": "${smtp_use_ssl}" },
       { "name": "GRAYLOG_TRANSPORT_EMAIL_HOSTNAME", "value": "${smtp_host}" },
       { "name": "GRAYLOG_TRANSPORT_EMAIL_PORT", "value": "${smtp_port}" },
       { "name": "GRAYLOG_TRANSPORT_EMAIL_AUTH_USERNAME", "value": "${smtp_username}" },
