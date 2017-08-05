@@ -62,6 +62,7 @@ data "template_file" "elasticsearch_master_config" {
     heap_size = "${var.elasticsearch_memory_limit / 2}"
     volume_name = "elasticsearch-data"
     min_master_nodes = "${(var.elasticsearch_master_nodes_count / 2) + 1 }"
+    master_nodes_addresses = "${join(", ", concat(var.external_masters_addresses, formatlist("$s:%s", aws_route53_record.elasticsearch_master_record.*.name, var.elasticsearch_native_port)))}"
   }
 }
 
