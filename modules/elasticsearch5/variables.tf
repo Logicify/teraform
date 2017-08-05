@@ -97,7 +97,7 @@ variable "data_volume_path" {
 variable "elasticsearch_version" {
   type = "string"
   description = "Elasticsearch version to use"
-  default = "2.4.5"
+  default = "5.2.2"
 }
 
 variable "elasticsearch_http_port" {
