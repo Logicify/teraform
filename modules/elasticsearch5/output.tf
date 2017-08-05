@@ -1,5 +1,5 @@
 output "elasticsearch_http_address" {
-  value = "${var.elasticsearch_master_nodes_count > 0  ? format("http://%s:%s", aws_route53_record.elasticsearch_master_record.name, var.elasticsearch_http_port) : format("http://%s:%s", aws_route53_record.elasticsearch_data_record.name, var.elasticsearch_http_port)}"
+  value = "${format("http://%s:%s", aws_route53_record.elasticsearch_data_record.name, var.elasticsearch_http_port)}"
 }
 
 output "elasticsearch_native_address" {
