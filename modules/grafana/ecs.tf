@@ -29,7 +29,7 @@ data "template_file" "grafana_task_config" {
     container_name = "grafana-server"
     grafana_version = "${var.grafana_version}"
     grafana_container_memory = "${var.grafana_memory_limit}"
-    grafana_password = "${var.grafana_password}"
+    grafana_password = "${var.grafana_admin_password}"
     grafana_url = "${var.grafana_url}"
     http_transport_port = "${var.grafana_port}"
     volume_name = "grafana-data"

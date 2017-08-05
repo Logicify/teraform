@@ -115,6 +115,14 @@ resource "aws_security_group" "graylog-server-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  // Outbound SMTP conenctions (in order to send email alerts)
+  egress {
+    from_port = 587
+    to_port = 587
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags {
     Env = "${var.env_name}"
     Name = "${var.env_name}-${var.verbose_name}-Graylog-Access"
