@@ -1,0 +1,21 @@
+cluster.name: "${cluster_name}"
+xpack.security.enabled: "false"
+node:
+  master: "${is_master}"
+  data: "${is_data}"
+network:
+  host: "_site_"
+http.port: "${http_transport_port}"
+transport.tcp.port: "${native_transport_port}"
+path:
+  data: "/srv/elasticsearch/data"
+  logs: "/srv/elasticsearch/logs"
+index:
+  number_of_shards: "${num_shards}"
+  number_of_replicas: "${num_replicas}"
+bootstrap.memory_lock: "true"
+discovery.zen:
+  minimum_master_nodes: "${min_master_nodes}"
+  ping:
+    multicast.enabled: "false"
+    unicast.hosts: "${master_nodes_addresses}"

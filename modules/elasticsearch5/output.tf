@@ -10,7 +10,6 @@ output "master_instance_ids" {
   value = ["${aws_instance.elasticsearch_master_instance.*.id}"]
 }
 
-
 output "master_instance_ips" {
   value = ["${aws_instance.elasticsearch_master_instance.*.private_ip}"]
 }
@@ -18,7 +17,6 @@ output "master_instance_ips" {
 output "data_instance_ids" {
   value = ["${aws_instance.elasticsearch_data_instance.*.id}"]
 }
-
 
 output "data_instance_ips" {
   value = ["${aws_instance.elasticsearch_data_instance.*.private_ip}"]

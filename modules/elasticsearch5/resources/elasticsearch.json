@@ -18,48 +18,8 @@
     ],
     "environment": [
       {
-        "name": "cluster.name",
-        "value": "${cluster_name}"
-      },
-      {
-        "name": "node.master",
-        "value": "${is_master}"
-      },
-      {
-        "name": "node.data",
-        "value": "${is_data}"
-      },
-      {
-        "name": "network.host",
-        "value": "0.0.0.0"
-      },
-      {
-        "name": "xpack.security.enabled",
-        "value": "false"
-      },
-      {
-        "name": "path.data",
-        "value": "/srv/elasticsearch/data"
-      },
-      {
-        "name": "path.logs",
-        "value": "/srv/elasticsearch/logs"
-      },
-      {
-        "name": "bootstrap.memory_lock",
-        "value": "true"
-      },
-      {
         "name": "ES_JAVA_OPTS",
         "value": "-Xms${heap_size}m -Xmx${heap_size}m"
-      },
-      {
-        "name": "discovery.zen.ping.unicast.hosts",
-        "value": "${master_nodes_addresses}"
-      },
-      {
-        "name": "discovery.zen.minimum_master_nodes",
-        "value": "${min_master_nodes}"
       }
     ],
     "mountPoints": [
@@ -69,6 +29,7 @@
         "readOnly": false
       }
     ],
+    "command": ["bash", "-c",  "bin/elasticsearch  -Epath.conf=/srv/elasticsearch/config/"],
     "volumesFrom": null,
     "extraHosts": null,
     "ulimits": [
