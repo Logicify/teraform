@@ -22,10 +22,6 @@
         "value": "${cluster_name}"
       },
       {
-        "name": "node.name",
-        "value": "${node_name}"
-      },
-      {
         "name": "node.master",
         "value": "${is_master}"
       },
