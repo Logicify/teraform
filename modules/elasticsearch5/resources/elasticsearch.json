@@ -1,7 +1,7 @@
 [
   {
     "name": "${container_name}",
-    "image": "elasticsearch:${elasticsearch_version}",
+    "image": "docker.elastic.co/elasticsearch/elasticsearch:${elasticsearch_version}",
     "memory": ${container_memory},
     "essential": true,
     "portMappings": [
@@ -18,20 +18,63 @@
     ],
     "environment": [
       {
+        "name": "cluster.name",
+        "value": "${cluster_name}"
+      },
+      {
+        "name": "node.name",
+        "value": "${node_name}"
+      },
+      {
+        "name": "node.master",
+        "value": "${is_master}"
+      },
+      {
+        "name": "node.data",
+        "value": "${is_data}"
+      },
+      {
+        "name": "network.host",
+        "value": "0.0.0.0"
+      },
+      {
+        "name": "xpack.security.enabled",
+        "value": "false"
+      },
+      {
+        "name": "path.data",
+        "value": "/srv/elasticsearch/data"
+      },
+      {
+        "name": "path.logs",
+        "value": "/srv/elasticsearch/logs"
+      },
+      {
+        "name": "bootstrap.memory_lock",
+        "value": "true"
+      },
+      {
         "name": "ES_JAVA_OPTS",
         "value": "-Xms${heap_size}m -Xmx${heap_size}m"
+      },
+      {
+        "name": "discovery.zen.ping.unicast.hosts",
+        "value": "${master_nodes_addresses}"
+      },
+      {
+        "name": "discovery.zen.minimum_master_nodes",
+        "value": "${min_master_nodes}"
       }
     ],
     "mountPoints": [
       {
         "sourceVolume": "${volume_name}",
-        "containerPath": "/usr/share/elasticsearch/data",
+        "containerPath": "/srv/elasticsearch/",
         "readOnly": false
       }
     ],
     "volumesFrom": null,
     "extraHosts": null,
-    "command": ["bash", "-c",  "chmod -R o+rw /usr/share/elasticsearch/data && gosu elasticsearch elasticsearch -Des.network.publish_host=`curl -s http://169.254.169.254/latest/meta-data/local-ipv4` -Dtransport.publish_port=${native_transport_port} -Dhttp.port=${http_transport_port} -Des.node.name=${node_name} -Des.cluster.name=${cluster_name} -Des.node.master=${is_master} -Des.node.data=${is_data} -Des.index.number_of_shards=${num_shards} -Des.index.number_of_replicas=${num_replicas} -Dbootstrap.memory_lock=true ${extra-options}"],
     "ulimits": [
       {
         "name": "nofile",
@@ -58,5 +101,3 @@
     }
   }
 ]
-
-

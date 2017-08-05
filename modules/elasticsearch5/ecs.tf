@@ -54,14 +54,14 @@ data "template_file" "elasticsearch_master_config" {
     native_transport_port = "${var.elasticsearch_native_port}"
     http_transport_port = "${var.elasticsearch_http_port}"
     cluster_name = "${var.elasticsearch_cluster_name}"
-    node_name = "${lower(var.verbose_name)}-elasticsearch-master"
+    node_name = "${lower(var.verbose_name)}-elasticsearch-master-${format("%.7s", uuid())}"
     is_master = "true"
     is_data = "false"
     num_shards = "${var.elasticsearch_num_shards}"
     num_replicas = "${var.elasticsearch_num_replicas}"
     heap_size = "${var.elasticsearch_memory_limit / 2}"
     volume_name = "elasticsearch-data"
-    extra-options = "-Ddiscovery.zen.minimum_master_nodes=${(var.elasticsearch_master_nodes_count / 2) + 1 }"
+    min_master_nodes = "${(var.elasticsearch_master_nodes_count / 2) + 1 }"
   }
 }
 
@@ -74,13 +74,14 @@ data "template_file" "elasticsearch_data_config" {
     native_transport_port = "${var.elasticsearch_native_port}"
     http_transport_port = "${var.elasticsearch_http_port}"
     cluster_name = "${var.elasticsearch_cluster_name}"
-    node_name = "${lower(var.verbose_name)}-elasticsearch-data"
+    node_name = "${lower(var.verbose_name)}-elasticsearch-data-${format("%.7s", uuid())}"
     is_master = "${var.is_data_nodes_master_eiligible == 1 ? "true" : "false"}"
     is_data = "true"
     num_shards = "${var.elasticsearch_num_shards}"
     num_replicas = "${var.elasticsearch_num_replicas}"
     heap_size = "${var.elasticsearch_memory_limit / 2}"
     volume_name = "elasticsearch-data"
-    extra-options = "-Ddiscovery.zen.ping.unicast.hosts=${join(", ", concat(var.external_masters_addresses, formatlist("$s:%s", aws_route53_record.elasticsearch_master_record.*.name, var.elasticsearch_native_port)))} -Ddiscovery.zen.minimum_master_nodes=${(var.elasticsearch_master_nodes_count / 2) + 1 }"
+    min_master_nodes = "${(var.elasticsearch_master_nodes_count / 2) + 1 }"
+    master_nodes_addresses = "${join(", ", concat(var.external_masters_addresses, formatlist("$s:%s", aws_route53_record.elasticsearch_master_record.*.name, var.elasticsearch_native_port)))}"
   }
 }
