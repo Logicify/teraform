@@ -35,6 +35,6 @@ runcmd:
   - [ cloud-init-per, once, "docker-stop", "service", "docker", "stop"]
   - [ cloud-init-per, once, "mount-ebs", "mount-ebs", "${volume_device}", "${volume_path}"]
   - [ cloud-init-per, once, "grant-permissions", "chmod", "0777", "-R", "${volume_path}"]
-  - [ cloud-init-per, once, "create-plugins-dir", "mkdir", "/etc/elasticsearch/config/plugins"]
+  - [ cloud-init-per, once, "create-scripts-dir", "mkdir", "/etc/elasticsearch/config/scripts"]
   - [ cloud-init-per, once, "docker-start", "service", "docker", "start"]
   - [ cloud-init-per, once, "start-ecs", "start", "ecs"]
