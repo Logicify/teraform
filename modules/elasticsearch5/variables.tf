@@ -98,14 +98,6 @@ variable "elasticsearch_native_port" {
   default = 9300
 }
 
-variable "elasticsearch_num_shards" {
-  default = 5
-}
-
-variable "elasticsearch_num_replicas" {
-  default = 0
-}
-
 variable "elasticsearch_cluster_name" {
   type = "string"
   description = "Name of Elasticsearch cluster"

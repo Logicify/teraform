@@ -56,8 +56,6 @@ data "template_file" "elasticsearch_config" {
     is_data = "true"
     native_transport_port = "${var.elasticsearch_native_port}"
     http_transport_port = "${var.elasticsearch_http_port}"
-    num_shards = "${var.elasticsearch_num_shards}"
-    num_replicas = "${var.elasticsearch_num_replicas}"
     min_master_nodes = "${var.elasticsearch_master_nodes_count > 0 ? (var.elasticsearch_master_nodes_count / 2) + 1 : (var.elasticsearch_nodes_count / 2) + 1}"
     master_nodes_addresses = ""
   }
