@@ -15,6 +15,15 @@ write_files:
 - path: /etc/sysctl.d/01-elasticsearch.conf
   content: |
     vm.max_map_count = 262144
+- path: /etc/elasticsearch/config/elasticsearch.yaml
+  encoding: b64
+  content: ${elasticsearch_config}
+- path: /etc/elasticsearch/config/jvm.options
+  encoding: b64
+  content: ${jvm_config}
+- path: /etc/elasticsearch/config/log4j2.properties
+  encoding: b64
+  content: ${log4j_config}
 - path: /etc/rsyslog.d/31-elasticsearch.conf
   content: |
     :syslogtag, startswith, "elasticsearch" /var/log/elasticsearch.log
@@ -24,7 +33,7 @@ runcmd:
   - [ cloud-init-per, once, "restart-syslog", "service", "rsyslog", "restart" ]
   - [ cloud-init-per, once, "read-custom-syslog", "sysctl", "-p", "/etc/sysctl.d/01-elasticsearch.conf"]
   - [ cloud-init-per, once, "docker-stop", "service", "docker", "stop"]
-  - [ cloud-init-per, once, "mount-ebs", "mount-ebs", "${volume_device}", "${volume_path}", "0777" ]
-  - [ cloud-init-per, once, "grant-permissions", "chmod", "-R", "o+rw", "${volume_path}"]
+  - [ cloud-init-per, once, "mount-ebs", "mount-ebs", "${volume_device}", "${volume_path}"]
+  - [ cloud-init-per, once, "grant-permissions", "chmod", "-R", "777", "${volume_path}"]
   - [ cloud-init-per, once, "docker-start", "service", "docker", "start"]
   - [ cloud-init-per, once, "start-ecs", "start", "ecs"]

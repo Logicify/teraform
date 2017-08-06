@@ -16,20 +16,18 @@
         "protocol": "tcp"
       }
     ],
-    "environment": [
-      {
-        "name": "ES_JAVA_OPTS",
-        "value": "-Xms${heap_size}m -Xmx${heap_size}m"
-      }
-    ],
     "mountPoints": [
       {
-        "sourceVolume": "${volume_name}",
+        "sourceVolume": "${data_volume}",
         "containerPath": "/srv/elasticsearch/",
+        "readOnly": false
+      },
+      {
+        "sourceVolume": "${config_volume}",
+        "containerPath": "/usr/share/elasticsearch/config",
         "readOnly": false
       }
     ],
-    "command": ["bash", "-c",  "bin/elasticsearch  -Epath.conf=/srv/elasticsearch/config/"],
     "volumesFrom": null,
     "extraHosts": null,
     "ulimits": [

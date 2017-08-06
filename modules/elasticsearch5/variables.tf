@@ -43,12 +43,6 @@ variable "instance_ami" {
   description = "AMI of ECS optimized Amazon Linux in your region"
 }
 
-variable "master_instance_type" {
-  type = "string"
-  description = "Size of EC2 instance to use for dedicated elasticsearch master"
-  default = "t2.micro"
-}
-
 variable "instance_type" {
   type = "string"
   description = "Size of EC2 instance to use for elasticsearch data nodes, please be aware of elasticsearch_memory_limit value"
@@ -61,10 +55,6 @@ variable "instance_key_name" {
 
 variable "instance_storage_size" {
   type = "string"
-}
-
-variable "master_instance_storage_size" {
-  default = 10
 }
 
 variable "availability_zones" {
@@ -119,10 +109,6 @@ variable "elasticsearch_num_replicas" {
 variable "elasticsearch_cluster_name" {
   type = "string"
   description = "Name of Elasticsearch cluster"
-}
-
-variable "elasticsearch_master_memory_limit" {
-  default = 512
 }
 
 variable "elasticsearch_memory_limit" {
