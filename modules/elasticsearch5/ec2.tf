@@ -73,8 +73,8 @@ data "template_file" "data_node_cloudconfig" {
     volume_path = "${var.data_volume_path}"
     volume_device = "${var.data_volume_device}"
     configuration_script = "${base64encode(file("${path.module}/../resources/install-unix-tools.sh"))}"
-    elasticsearch_config = "${base64decode(data.template_file.elasticsearch_config.rendered)}"
-    jvm_config = "${base64decode(data.template_file.jvm_config.rendered)}"
+    elasticsearch_config = "${base64encode(data.template_file.elasticsearch_config.rendered)}"
+    jvm_config = "${base64encode(data.template_file.jvm_config.rendered)}"
     log4j_config = "${base64encode(file("${path.module}/resources/log4j2.properties"))}"
   }
 }
