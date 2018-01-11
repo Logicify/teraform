@@ -1,5 +1,5 @@
 output "graylog_address" {
-  value = "http://${aws_route53_record.graylog_record.name}"
+  value = "http://${element(aws_route53_record.graylog_record.*.name)}"
 }
 
 output "graylog_instance_ids" {
