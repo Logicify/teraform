@@ -1,5 +1,5 @@
 output "grafana_url" {
-  value = "http://${aws_route53_record.grafana_record[0].name}:${var.grafana_port}"
+  value = "http://${element(aws_route53_record.grafana_record.*.name, 0)}:${var.grafana_port}"
 }
 
 output "grafana_instance_ids" {
