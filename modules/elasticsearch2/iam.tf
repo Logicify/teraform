@@ -4,7 +4,7 @@ resource "aws_iam_instance_profile" "elasticsearch" {
 }
 
 resource "aws_iam_role" "elasticsearch_role" {
-  name = "${lower(var.env_name)}-elasticsearch"
+  name = "${lower(var.env_name)}-${lower(var.verbose_name)}-elasticsearch"
   assume_role_policy = "${data.aws_iam_policy_document.ec2_assume_policy.json}"
 }
 
