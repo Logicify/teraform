@@ -1,5 +1,5 @@
 resource "aws_iam_instance_profile" "elasticsearch" {
-  name = "${lower(var.env_name)}-elasticsearch"
+  name = "${lower(var.env_name)}-${lower(var.verbose_name)}-elasticsearch"
   role = "${aws_iam_role.elasticsearch_role.name}"
 }
 
