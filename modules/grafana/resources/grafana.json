@@ -27,8 +27,13 @@
     ],
     "mountPoints": [
       {
-        "sourceVolume": "${volume_name}",
+        "sourceVolume": "${data_volume_name}",
         "containerPath": "/var/lib/grafana",
+        "readOnly": false
+      },
+      {
+        "sourceVolume": "${config_volume_name}",
+        "containerPath": "/etc/grafana",
         "readOnly": false
       }
     ],
