@@ -8,6 +8,10 @@ resource "aws_ecs_task_definition" "grafana_task" {
   volume {
     name = "grafana-data"
     host_path = "${var.data_volume_path}/grafana-data"
+  }  
+  volume {
+    name = "grafana-config"
+    host_path = "${var.data_volume_path}/grafana-config"
   }
 }
 
