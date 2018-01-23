@@ -36,6 +36,7 @@ data "template_file" "grafana_task_config" {
     grafana_password = "${var.grafana_admin_password}"
     grafana_url = "${var.grafana_url}"
     http_transport_port = "${var.grafana_port}"
-    volume_name = "grafana-data"
+    data_volume_name = "grafana-data"
+    config_volume_name = "grafana-config"
   }
 }
