@@ -1,13 +1,13 @@
 output "flower_url" {
-  value = "http://${aws_route53_record.flower_record.name}:${var.flower_port}"
+  value = "http://${element(concat(aws_route53_record.flower_record.*.name,list("")), 0)}:${var.flower_port}"
 }
 
 output "flower_instance_id" {
-  value = "${aws_instance.flower_instance.id}"
+  value = "${element(concat(aws_instance.flower_instance.*.id,list("")), 0)}"
 }
 
 output "flower_instance_ip" {
-  value = "${aws_instance.flower_instance.private_ip}"
+  value = "${element(concat(aws_instance.flower_instance.*.private_ip,list("")), 0)}"
 }
 
 output "flower_sg_id" {
