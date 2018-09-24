@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+
+export AWS_SHARED_CREDENTIALS_FILE=./credentials;
+terraform apply $@ ./plan.bin

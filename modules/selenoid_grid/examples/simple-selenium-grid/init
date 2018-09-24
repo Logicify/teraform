@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+AWS_SHARED_CREDENTIALS_FILE=./secrets;
+
+terraform init \
+    -backend="true" \
+    -backend-config="region=us-east-1" \
+    -backend-config="profile=default" \
+    -backend-config="shared_credentials_file=$AWS_SHARED_CREDENTIALS_FILE"

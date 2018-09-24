@@ -5,6 +5,7 @@
 *.tfstate.backup
 .terraform
 .terraform*
+plan.bin
 
 ### IDE
 .idea

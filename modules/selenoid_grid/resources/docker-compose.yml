@@ -1,0 +1,25 @@
+version: '2.2'
+services:
+  ggr:
+    image: aerokube/ggr:latest-release
+    command: [ -guests-allowed, -guests-quota, ggr-quota ]
+    ports:
+      - "${hub_port}:4444"
+    volumes:
+      - /opt/docker-data/grid-router:/etc/grid-router:ro
+    restart: on-failure
+
+  ggr-ui:
+    image: aerokube/ggr-ui:latest-release
+    volumes_from:
+      - ggr:ro
+    restart: on-failure
+
+  selenoid-ui:
+    image: aerokube/selenoid-ui
+    command: [ "--selenoid-uri", "http://ggr-ui:8888" ]
+    links:
+      - ggr-ui
+    ports:
+      - "8080:8080"
+    restart: on-failure
