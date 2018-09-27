@@ -70,7 +70,7 @@ Below is a schematic components deployment diagram showing relations between com
 Ggr discovers selenoid nodes by querying AWS auto-scaling group instances on regular interval (3 min by default) and 
 requesting `/status` API endpoint of each.
 
-By default selenium interface is running on `4444` port and monitoring ui is on `8080`
+By default selenium interface is running on `4444` port and monitoring ui is on `80`
 
 ## Deployment Hints
 

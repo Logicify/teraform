@@ -193,6 +193,7 @@ data "template_file" "ggr-docker-compose" {
   template = "${file("${path.module}/resources/docker-compose.yml")}"
   vars {
     hub_port = "${var.selenium_hub_port}"
+    web_ui_port = "${var.web_ui_port}"
   }
 }
 

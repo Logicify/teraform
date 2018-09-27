@@ -21,5 +21,5 @@ services:
     links:
       - ggr-ui
     ports:
-      - "8080:8080"
+      - "${web_ui_port}:8080"
     restart: on-failure

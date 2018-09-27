@@ -28,7 +28,7 @@ variable "selenium_port" {
 }
 
 variable "web_ui_port" {
-  default = 8080
+  default = 80
   description = "Port where Selenoid-UI cluster monitor will be listening"
 }
 
