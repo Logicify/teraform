@@ -130,7 +130,10 @@ once they are provisioned they will have latest available browser images.
 
 **CAVEAT:** since selenoid runs browsers in docker you would expect *latest version of your browser docker image*.
 Which means that it may not be as fresh as you required browser. You can find available browser docker images 
-on [selenoid dockerhub](https://hub.docker.com/u/selenoid/).
+
+* in [selenoid doc appendix A](https://aerokube.com/selenoid/latest/#_browser_image_information) - with known issues 
+and requirements  
+* on [selenoid dockerhub](https://hub.docker.com/u/selenoid/).
 
 #### Advanced browser configuration 
 
