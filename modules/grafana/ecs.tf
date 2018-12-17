@@ -28,8 +28,11 @@ data "template_file" "grafana_task_config" {
   vars {
     container_name = "grafana-server"
     grafana_version = "${var.grafana_version}"
+    grafana_enable_anonymous_access = "${var.grafana_enable_anonymous_access}"
     grafana_container_memory = "${var.grafana_memory_limit}"
+    grafana_user = "${var.grafana_admin_user}"
     grafana_password = "${var.grafana_admin_password}"
+    grafana_plugins = "${var.grafana_plugins}"
     grafana_url = "${var.grafana_url}"
     http_transport_port = "${var.grafana_port}"
     volume_name = "grafana-data"

@@ -86,6 +86,21 @@ variable "grafana_version" {
   default = "4.3.2"
 }
 
+variable "grafana_plugins" {
+  type = "string"
+  default = "grafana-clock-panel,grafana-piechart-panel,grafana-worldmap-panel,grafana-simple-json-datasource"
+}
+
+variable "grafana_admin_user" {
+  type = "string"
+  default = "admin"
+}
+
+variable "grafana_enable_anonymous_access" {
+  type = "string"
+  default = "false"
+}
+
 variable "grafana_admin_password" {
   type = "string"
 }
@@ -100,6 +115,7 @@ variable "grafana_port" {
 
 variable "grafana_memory_limit" {
   description = "Amount of memory to allocate for grafana process"
+  default = 512
 }
 
 variable "grafana_nodes_count" {
