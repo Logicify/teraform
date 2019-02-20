@@ -83,7 +83,7 @@ variable "trusted_networks" {
 
 variable "grafana_version" {
   type = "string"
-  default = "4.3.2"
+  default = "5.4.3"
 }
 
 variable "grafana_admin_password" {
@@ -108,4 +108,13 @@ variable "grafana_nodes_count" {
 
 variable "grafana_tasks_count" {
   default = 1
+}
+
+variable "extra_iam_roles" {
+  type = "list"
+  default = [
+    "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess",
+    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
+    "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
+  ]
 }
