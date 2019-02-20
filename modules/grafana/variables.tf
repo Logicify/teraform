@@ -117,9 +117,7 @@ variable "grafana_plugins" {
 variable "extra_iam_roles" {
   type = "list"
   default = [
-    "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess",
-    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
-    "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
+    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
   ]
 }
 
@@ -127,7 +125,6 @@ variable "extra_task_iam_roles" {
   type = "list"
   default = [
     "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess",
-    "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
   ]
 }

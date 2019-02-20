@@ -37,6 +37,7 @@ data "template_file" "grafana_task_config" {
     grafana_url = "${var.grafana_url}"
     grafana_plugins = "${var.grafana_plugins}"
     http_transport_port = "${var.grafana_port}"
+    task_role = "${aws_iam_role.grafana_task_role.arn}"
     data_volume_name = "grafana-data"
     config_volume_name = "grafana-config"
   }
