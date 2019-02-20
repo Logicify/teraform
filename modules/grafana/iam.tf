@@ -10,7 +10,7 @@ resource "aws_iam_role" "grafana_role" {
 
 resource "aws_iam_role" "grafana_task_role" {
   name = "${lower(var.env_name)}-grafana-task"
-  assume_role_policy = "${data.aws_iam_policy_document.ec2_assume_policy.json}"
+  assume_role_policy = "${data.aws_iam_policy_document.task_assume_policy.json}"
 }
 
 resource "aws_iam_role_policy" "docker_policy" {
