@@ -8,6 +8,11 @@ resource "aws_iam_role" "grafana_role" {
   assume_role_policy = "${data.aws_iam_policy_document.ec2_assume_policy.json}"
 }
 
+resource "aws_iam_role" "grafana_task_role" {
+  name = "${lower(var.env_name)}-grafana-task"
+  assume_role_policy = "${data.aws_iam_policy_document.ec2_assume_policy.json}"
+}
+
 resource "aws_iam_role_policy" "docker_policy" {
   name = "${lower(var.env_name)}-docker-policy"
   role = "${aws_iam_role.grafana_role.id}"
@@ -29,6 +34,17 @@ data "aws_iam_policy_document" "ec2_assume_policy" {
     principals {
       type = "Service"
       identifiers = ["ecs.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "task_assume_policy" {
+  statement {
+    effect = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      identifiers = ["ecs-tasks.amazonaws.com"]
+      type = "Service"
     }
   }
 }
@@ -64,4 +80,10 @@ resource "aws_iam_role_policy_attachment" "extra_iam_roles" {
   count = "${length(var.extra_iam_roles)}"
   policy_arn = "${var.extra_iam_roles[count.index]}"
   role = "${aws_iam_role.grafana_role.id}"
+}
+
+resource "aws_iam_role_policy_attachment" "extra_task_iam_roles" {
+  count = "${length(var.extra_task_iam_roles)}"
+  policy_arn = "${var.extra_task_iam_roles[count.index]}"
+  role = "${aws_iam_role.grafana_task_role.id}"
 }
