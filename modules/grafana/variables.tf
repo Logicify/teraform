@@ -110,6 +110,10 @@ variable "grafana_tasks_count" {
   default = 1
 }
 
+variable "grafana_plugins" {
+  default = "grafana-clock-panel,grafana-piechart-panel,grafana-worldmap-panel,grafana-simple-json-datasource"
+}
+
 variable "extra_iam_roles" {
   type = "list"
   default = [

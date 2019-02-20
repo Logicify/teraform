@@ -14,7 +14,7 @@
     "environment": [
       {
         "name": "GF_INSTALL_PLUGINS",
-        "value": "grafana-clock-panel,grafana-piechart-panel,grafana-worldmap-panel,grafana-simple-json-datasource"
+        "value": "${grafana_plugins}"
       },
       {
         "name": "GF_SERVER_ROOT_URL",
