@@ -47,6 +47,8 @@ data "template_file" "grafana_task_config" {
     config_volume_name = "grafana-config"
     mysql_root_password = "${var.mysql_root_password}"
     mysql_user = "${var.mysql_user}"
+    mysql_host = "${var.mysql_host}"
+    create_mysql_db = "${var.create_mysql_db}"
   }
 }
 

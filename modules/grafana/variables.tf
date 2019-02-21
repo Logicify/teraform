@@ -141,6 +141,10 @@ variable "mysql_user" {
   default = "root"
 }
 
+variable "mysql_host" {
+  default = "db:3306"
+}
+
 variable "grafana_database" {
   default = "sqlite3"
 }

@@ -2,7 +2,6 @@
   {
     "name": "${container_name}",
     "image": "grafana/grafana:${grafana_version}",
-    "memory":  ${grafana_container_memory},
     "essential": true,
     "portMappings": [
       {
@@ -26,7 +25,7 @@
       },
       {
         "name": "GF_DATABASE_HOST",
-        "value": "${container_name}-mysql:3306"
+        "value": "${mysql_host}"
       },
       {
         "name": "GF_DATABASE_USER",
@@ -61,5 +60,7 @@
       "options": {
         "tag": "grafana"
       }
-    }
+    },
+    "memory":  ${grafana_container_memory},
+    "links": ${create_mysql_db ? "[\"${container_name}-mysql:db\"]", "null"}
   }
