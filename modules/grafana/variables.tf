@@ -128,3 +128,15 @@ variable "extra_task_iam_roles" {
     "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
   ]
 }
+
+variable "mysql_root_password" {
+  default = "root"
+}
+
+variable "mysql_memory_limit" {
+  default = "200"
+}
+
+variable "grafana_database" {
+  default = "sqlite3"
+}

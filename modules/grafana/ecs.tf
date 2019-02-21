@@ -13,6 +13,10 @@ resource "aws_ecs_task_definition" "grafana_task" {
     name = "grafana-config"
     host_path = "${var.data_volume_path}/grafana-config"
   }
+  volume {
+    name = "grafana-mysql-data"
+    host_path = "${var.data_volume_path}/grafana-mysql-data"
+  }
 }
 
 resource "aws_ecs_service" "grafana_service" {
@@ -36,9 +40,14 @@ data "template_file" "grafana_task_config" {
     grafana_password = "${var.grafana_admin_password}"
     grafana_url = "${var.grafana_url}"
     grafana_plugins = "${var.grafana_plugins}"
+    grafana_database = "${var.grafana_database}"
     http_transport_port = "${var.grafana_port}"
     task_role = "${aws_iam_role.grafana_task_role.arn}"
     data_volume_name = "grafana-data"
     config_volume_name = "grafana-config"
+    mysql_volume_name = "grafana-mysql-data"
+    mysql_memory_limit = "${var.mysql_memory_limit}"
+    mysql_root_password = "${var.mysql_root_password}"
+
   }
 }
