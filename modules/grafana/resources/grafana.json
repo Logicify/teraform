@@ -62,5 +62,5 @@
       }
     },
     "memory":  ${grafana_container_memory},
-    "links": ${create_mysql_db ? "[\"${container_name}-mysql:db\"]", "null"}
+    "links": ${create_mysql_db ? "[\"${container_name}-mysql:db\"]" : "null"}
   }
