@@ -44,6 +44,11 @@
         "hostPort": 12204,
         "containerPort": 12204,
         "protocol": "udp"
+      },
+      {
+      "hostPort": 12121,
+      "containerPort": 12121,
+      "protocol": "tcp"
       }
     ],
     "environment": [
