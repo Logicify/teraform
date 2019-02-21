@@ -1,8 +1,7 @@
-[
+
   {
     "name": "${container_name}",
     "image": "grafana/grafana:${grafana_version}",
-    "taskRoleArn": "${task_role}",
     "memory":  ${grafana_container_memory},
     "essential": true,
     "portMappings": [
@@ -28,6 +27,10 @@
       {
         "name": "GF_DATABASE_HOST",
         "value": "${container_name}-mysql:3306"
+      },
+      {
+        "name": "GF_DATABASE_USER",
+        "value": "${mysql_user}"
       },
       {
         "name": "GF_DATABASE_PASSWORD",
@@ -59,54 +62,4 @@
         "tag": "grafana"
       }
     }
-  },
-  {
-    "name": "${container_name}-mysql",
-    "image": "mysql:8.0",
-    "memory":  "${mysql_memory_limit}",
-    "essential": true,
-    "portMappings": [
-      {
-        "hostPort": 1106,
-        "containerPort": 3306,
-        "protocol": "tcp"
-      }
-    ],
-    "environment": [
-      {
-        "name": "MYSQL_ROOT_PASSWORD",
-        "value": "${mysql_root_password}"
-      },
-      {
-        "name": "MYSQL_DATABASE",
-        "value": "grafana"
-      }
-    ],
-    "mountPoints": [
-      {
-        "sourceVolume": "${data_volume_name}",
-        "containerPath": "/var/lib/grafana",
-        "readOnly": false
-      },
-      {
-        "sourceVolume": "${config_volume_name}",
-        "containerPath": "/etc/grafana",
-        "readOnly": false
-      },
-      {
-        "sourceVolume": "${mysql_volume_name}",
-        "containerPath": "/var/lib/mysql",
-        "readOnly": false
-      }
-    ],
-    "volumesFrom": null,
-    "ulimits": null,
-    "dockerLabels": null,
-    "logConfiguration": {
-      "logDriver": "syslog",
-      "options": {
-        "tag": "grafana"
-      }
-    }
   }
-]

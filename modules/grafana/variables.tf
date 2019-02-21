@@ -137,6 +137,14 @@ variable "mysql_memory_limit" {
   default = "200"
 }
 
+variable "mysql_user" {
+  default = "root"
+}
+
 variable "grafana_database" {
   default = "sqlite3"
+}
+
+variable "create_mysql_db" {
+  default = false
 }

@@ -4,7 +4,8 @@ data "aws_ecs_cluster" "ecs_cluster" {
 
 resource "aws_ecs_task_definition" "grafana_task" {
   family = "${lower(var.env_name)}-grafana"
-  container_definitions = "${data.template_file.grafana_task_config.rendered}"
+  container_definitions = "[${data.template_file.grafana_task_config.rendered}${var.create_mysql_db ? "," : ""}${var.create_mysql_db ? data.template_file.grafana_mysql_task_config.rendered : ""}]"
+  task_role_arn = "${aws_iam_role.grafana_task_role.arn}"
   volume {
     name = "grafana-data"
     host_path = "${var.data_volume_path}/grafana-data"
@@ -42,12 +43,19 @@ data "template_file" "grafana_task_config" {
     grafana_plugins = "${var.grafana_plugins}"
     grafana_database = "${var.grafana_database}"
     http_transport_port = "${var.grafana_port}"
-    task_role = "${aws_iam_role.grafana_task_role.arn}"
     data_volume_name = "grafana-data"
     config_volume_name = "grafana-config"
+    mysql_root_password = "${var.mysql_root_password}"
+    mysql_user = "${var.mysql_user}"
+  }
+}
+
+data "template_file" "grafana_mysql_task_config" {
+  template = "${file("${path.module}/resources/mysql.json")}"
+  vars {
     mysql_volume_name = "grafana-mysql-data"
     mysql_memory_limit = "${var.mysql_memory_limit}"
     mysql_root_password = "${var.mysql_root_password}"
-
+    mysql_user = "${var.mysql_user}"
   }
 }
