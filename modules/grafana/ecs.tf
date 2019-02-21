@@ -53,6 +53,7 @@ data "template_file" "grafana_task_config" {
 data "template_file" "grafana_mysql_task_config" {
   template = "${file("${path.module}/resources/mysql.json")}"
   vars {
+    container_name = "grafana-server-mysql"
     mysql_volume_name = "grafana-mysql-data"
     mysql_memory_limit = "${var.mysql_memory_limit}"
     mysql_root_password = "${var.mysql_root_password}"

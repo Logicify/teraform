@@ -1,5 +1,5 @@
 {
-  "name": "${container_name}-mysql",
+  "name": "${container_name}",
   "image": "mysql:8.0",
   "memory":  ${mysql_memory_limit},
   "essential": true,
