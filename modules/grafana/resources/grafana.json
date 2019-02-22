@@ -38,6 +38,38 @@
       {
         "name": "GF_DATABASE_TYPE",
         "value": "${grafana_database}"
+      },
+      {
+        "name": "GF_AUTH_ANONYMOUS_ENABLED",
+        "value": "${grafana_anonymous_auth}"
+      },
+      {
+        "name": "GF_SERVER_ROOT_URL",
+        "value": "${grafana_public_url}"
+      },
+      {
+        "name": "GF_SMTP_ENABLED",
+        "value": "${smtp_enabled}"
+      },
+      {
+        "name": "GF_SMTP_HOST",
+        "value": "${smtp_host}"
+      },
+      {
+        "name": "GF_SMTP_USER",
+        "value": "${smtp_user}"
+      },
+      {
+        "name": "GF_SMTP_PASSWORD",
+        "value": "${smtp_password}"
+      },
+      {
+        "name": "GF_SMTP_FROM_NAME",
+        "value": "${smtp_from_name}"
+      },
+      {
+        "name": "GF_SMTP_FROM_ADDRESS",
+        "value": "${smtp_from_address}"
       }
     ],
     "mountPoints": [

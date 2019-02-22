@@ -152,3 +152,35 @@ variable "grafana_database" {
 variable "create_mysql_db" {
   default = false
 }
+
+variable "grafana_public_url" {
+  default = "http://localhost:3000"
+}
+
+variable "grafana_anonymous_auth" {
+  default = false
+}
+
+variable "smtp_enabled" {
+  default = true
+}
+
+variable "smtp_host" {
+  default = "localhost:25"
+}
+
+variable "smtp_user" {
+  default = "username"
+}
+
+variable "smtp_password" {
+  default = ""
+}
+
+variable "smtp_from_name" {
+  default = "Grafana"
+}
+
+variable "smtp_from_address" {
+  default = "grafana@localhost.lan"
+}
