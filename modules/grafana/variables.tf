@@ -153,10 +153,6 @@ variable "create_mysql_db" {
   default = false
 }
 
-variable "grafana_public_url" {
-  default = "http://localhost:3000"
-}
-
 variable "grafana_anonymous_auth" {
   default = false
 }

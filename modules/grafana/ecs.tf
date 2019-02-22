@@ -41,7 +41,6 @@ data "template_file" "grafana_task_config" {
     grafana_password = "${var.grafana_admin_password}"
     grafana_url = "${var.grafana_url}"
     grafana_plugins = "${var.grafana_plugins}"
-    grafana_public_url = "${var.grafana_public_url}"
     grafana_anonymous_auth = "${var.grafana_anonymous_auth}"
     smtp_host = "${var.smtp_host}"
     smtp_user = "${var.smtp_user}"
