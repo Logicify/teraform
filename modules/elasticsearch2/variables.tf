@@ -157,3 +157,7 @@ variable "elasticsearch_nodes_count" {
   default = 1
 }
 
+variable "extra_iam_roles" {
+  type = "list"
+  default = []
+}
