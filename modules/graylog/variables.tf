@@ -167,3 +167,8 @@ variable "elasticsearch_cluster_name" {
   description = "Name of Elasticsearch cluster"
   default = "graylog"
 }
+
+variable "extra_iam_roles" {
+  type = "list"
+  default = []
+}

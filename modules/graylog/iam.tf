@@ -59,3 +59,9 @@ data "aws_iam_policy_document" "docker_policy" {
     resources = ["*"]
   }
 }
+
+resource "aws_iam_role_policy_attachment" "extra_iam_roles" {
+  count = "${length(var.extra_iam_roles)}"
+  policy_arn = "${var.extra_iam_roles[count.index]}"
+  role = "${aws_iam_role.graylog_role.id}"
+}
