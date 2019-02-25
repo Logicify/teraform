@@ -2,6 +2,7 @@
   {
     "name": "${container_name}",
     "image": "grafana/grafana:${grafana_version}",
+    "cpu": 0,
     "memory":  ${grafana_container_memory},
     "essential": true,
     "portMappings": [
@@ -85,7 +86,7 @@
         "readOnly": false
       }
     ],
-    "volumesFrom": null,
+    "volumesFrom": [],
     "ulimits": null,
     "dockerLabels": null,
     "logConfiguration": {
