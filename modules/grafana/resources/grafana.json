@@ -88,8 +88,6 @@
       }
     ],
     "volumesFrom": [],
-    "ulimits": null,
-    "dockerLabels": null,
     "logConfiguration": {
       "logDriver": "syslog",
       "options": {
