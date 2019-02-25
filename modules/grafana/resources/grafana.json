@@ -2,6 +2,7 @@
   {
     "name": "${container_name}",
     "image": "grafana/grafana:${grafana_version}",
+    "memory":  ${grafana_container_memory},
     "essential": true,
     "portMappings": [
       {
@@ -93,6 +94,5 @@
         "tag": "grafana"
       }
     },
-    "memory":  ${grafana_container_memory},
     "links": ${create_mysql_db ? "[\"${container_name}-mysql:db\"]" : "null"}
   }
