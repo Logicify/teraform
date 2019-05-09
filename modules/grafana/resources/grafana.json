@@ -47,10 +47,6 @@
         "value": "${grafana_anonymous_auth}"
       },
       {
-        "name": "GF_SERVER_ROOT_URL",
-        "value": "${grafana_url}"
-      },
-      {
         "name": "GF_SMTP_ENABLED",
         "value": "${smtp_enabled}"
       },
