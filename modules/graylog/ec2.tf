@@ -34,18 +34,25 @@ resource "aws_security_group" "graylog-server-sg" {
     cidr_blocks = ["${var.trusted_networks}"]
   }
 
-  // Inbound GELF protocol connections via UDP
+  // Inbound connections via UDP
   ingress {
     from_port = 12201
-    to_port = 12210
+    to_port = 12205
     protocol = "udp"
     cidr_blocks = ["${var.trusted_networks}"]
   }
 
-  // Inbound GELF protocol connections via TCP
+  // Inbound connections via TCP
   ingress {
     from_port = 12201
-    to_port = 12210
+    to_port = 12205
+    protocol = "tcp"
+    cidr_blocks = ["${var.trusted_networks}"]
+  }
+
+  ingress {
+    from_port = 12121
+    to_port = 12121
     protocol = "tcp"
     cidr_blocks = ["${var.trusted_networks}"]
   }
